@@ -1,0 +1,48 @@
+body {
+    background-color:#e6e6e6; /*#ffebcc;*/
+}
+
+.jumbotron {
+    background-color: #c9e0ad; 
+}
+
+#start {
+    background-color: #737373;
+    border: black;
+}
+
+button {
+    background-color:rgb(106, 161, 10);
+    color:white;
+    height: 3em;
+    width: 75%;
+    padding: 0.5em;
+    margin: 1em;
+    /*text-align:center;*/
+    border-radius: 5px;
+    text-align:left;
+}
+
+p {
+    font-weight: bolder;
+    padding-top: 2em;
+}
+
+#question-Block {
+    position: relative;
+}
+
+span {      /*for time display*/
+    position: absolute;
+    top: 4em;
+    right: 2em;
+    background-color: #990000;
+    color: white;
+    height: 3em;
+    /*width: ; */
+    padding: 0.5em;
+    margin: 1em;
+    border-radius: 5px;
+    text-align:center;
+
+}
