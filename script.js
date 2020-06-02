@@ -2,6 +2,8 @@
 var startButton = document.querySelector("#start");
 var intro = document.querySelector("#intro");
 var questionBlock = document.querySelector("#question-block");
+var scoreBlock = document.querySelector("#scoreBlock");
+var listBlock = document.querySelector("#listBlock");
 
 //Setting questions in an array
 var questionArray = ['QUESTION 1: When asked, "How do you put a giraffe into a refrigerator?" how should you respond?',
@@ -60,6 +62,9 @@ var responseWrong = ["Sorry, that's not right.  Better luck with the next one.",
     //                 choice3.className.add="choices";
     //                 choice4.className.add="choices";
 
+var correct = 0;
+var scoreArray = [];
+
 //function that activates when start button is clicked (see bottom for event listener)
 function startQuiz() {
   $(intro).hide();
@@ -75,10 +80,14 @@ function startQuiz() {
   choice2.textContent = "";
   choice3.textContent = "";
   choice4.textContent = "";
-  choice1.classList.add("choices");
-  choice2.classList.add("choices");
-  choice3.classList.add("choices");
-  choice4.classList.add("choices");
+  //choice1.className.add="choices";
+  //choice2.className.add="choices";
+  //choice3.className.add="choices";
+  //choice4.className.add="choices";
+  choice1.classList.add="choices";
+  choice2.classList.add="choices";
+  choice3.classList.add="choices";
+  choice4.classList.add="choices";
   choice1.dataset.indexNumber = "0";
   choice2.dataset.indexNumber = "1";
   choice3.dataset.indexNumber = "2";
@@ -116,6 +125,7 @@ function startQuiz() {
               let userchoice = event.target.getAttribute("dataset.indexNumber");
               if(userchoice[j] === answer[j]) {
                 response.textContent = responseCorrect[0];
+                correct++;
               }
               else {
               response.textContent = responseWrong[0];
@@ -126,15 +136,16 @@ function startQuiz() {
         };
       }
       )} else {
-    //  timerDisplay.textContent = "Time's up!";
+    var secondsLeft = totalSeconds - secondsElapsed;
+    var score = correct * 15 + secondsLeft;
+    return score; 
+    scoreArray.push("score");
     }
   }
 }
-    //track high scores --- in local storage?
 
 startButton.addEventListener("click", startQuiz);
 //choices.addEventListener("click", checkAnswer);
-
 
 var totalSeconds = 0;
 var secondsElapsed = 0;
@@ -159,7 +170,7 @@ function startTimer() {
   if (totalSeconds > 0) {    
       interval = setInterval(function() {
         var secondsLeft = (totalSeconds - secondsElapsed);
-        console.log("secondsLeft" + secondsLeft);
+//        console.log("secondsLeft" + secondsLeft);
         parseInt(secondsElapsed);
         secondsElapsed++;
         timerDisplay.textContent = parseInt(secondsLeft) + " seconds left";
@@ -176,20 +187,28 @@ function stopTimer() {
   //renderTime();   ----- NEVER USED
 }
 
+var finalscoreDisplay;
+
 function checkTimeout() {
  // checks to see if the time has run out
  
- //if (secondsLeft == 0) {   ----- DOESN'T WORK
+ // if (secondsLeft == 0) {   ----- DOESN'T WORK
   if (secondsElapsed >= totalSeconds) { 
     console.log("secondsElapsed " + secondsElapsed);
     console.log("totalSeconds " + totalSeconds);
   stopTimer();
   alert("Times Up");
-  //If while playing game, times out (gameover == false) -> flip screen to FinalScore
-  //if (gameover == false) {
+  scoreArray.sort(function(a,b){b - a;} - 0.5);
+  finalscoreDisplay = document.createElement("li");
+  finalscoreDisplay.textContent = "";
+  scoreBlock.appendChild(finalscoreDisplay);
+
+  for (var k = 0; k < scoreArray.length; k++) {
+    finalscoreDisplay.textContent = scoreArray[k];
+  }
+
     questionBlock.style.display = "none";
-    finalscoreDisplay.style.display = "block";
+    scoreBlock.style.display = "block";
   //}
-  //console.log("Times up - current score:", score);
 }
 } 
