@@ -45,6 +45,21 @@ var responseWrong = ["Sorry, that's not right.  Better luck with the next one.",
                      "Sorry, that's not right.  Better luck with the next one.",
                      "Sorry, that's not right.  Maybe you can try the quiz one more time."]
 
+    //                 var question = document.createElement("p");
+    //                 var choice1 = document.createElement("button", onclick = "javascript: setButtonPressed();");
+    //                 var choice2 = document.createElement("button", onclick = "javascript: setButtonPressed();");
+    //                 var choice3 = document.createElement("button", onclick = "javascript: setButtonPressed();");
+    //                 var choice4 = document.createElement("button", onclick = "javascript: setButtonPressed();");
+    //                 question.textContent = "";
+    //                 choice1.textContent = "";
+    //                 choice2.textContent = "";
+    //                 choice3.textContent = "";
+    //                 choice4.textContent = "";
+    //                 choice1.className.add="choices";
+    //                 choice2.className.add="choices";
+    //                 choice3.className.add="choices";
+    //                 choice4.className.add="choices";
+
 //function that activates when start button is clicked (see bottom for event listener)
 function startQuiz() {
   $(intro).hide();
@@ -89,15 +104,15 @@ function startQuiz() {
       //function to wait until buttons are pushed to continue
       var buttonpressed = false;
 
-      function waitForIt() {
+      choices.addEventListener("click", function waitForIt() {
         if (!buttonpressed) {
           setTimeout(waitForIt, 500);
         } else {
           function setButtonPressed(event) {
             buttonpressed = true;
           
-            //choices.addEventListener("click", function checkAnswer() {
-            function checkAnswer(event) {
+            choices.addEventListener("click", function checkAnswer(event) {
+            //function checkAnswer(event) {
               let userchoice = event.target.getAttribute("dataset.indexNumber");
               if(userchoice[j] === answer[j]) {
                 response.textContent = responseCorrect[0];
@@ -107,22 +122,23 @@ function startQuiz() {
               secondsElapsed = secondsElapsed + 5;
               }
             }
-          }
+          )}
         };
       }
-    } else {
-      timerDisplay.textContent = "Time's up!";
+      )} else {
+    //  timerDisplay.textContent = "Time's up!";
     }
   }
 }
     //track high scores --- in local storage?
 
 startButton.addEventListener("click", startQuiz);
-choices.addEventListener("click", checkAnswer);
+//choices.addEventListener("click", checkAnswer);
 
 
 var totalSeconds = 0;
 var secondsElapsed = 0;
+//var secondsLeft = (totalSeconds - secondsElapsed);
 var interval;
 
 function startTimer() {
@@ -132,14 +148,20 @@ function startTimer() {
   questionBlock.appendChild(timerDisplay);
 
   totalSeconds = 60;
+  secondsElapsed = 0;
+//  secondsLeft = (totalSeconds - secondsElapsed);
+//  var secondsLeft = (totalSeconds - secondsElapsed);
+//  console.log("secondsLeft" + secondsLeft);
+
 
   clearInterval(interval);
 
   if (totalSeconds > 0) {    
       interval = setInterval(function() {
+        var secondsLeft = (totalSeconds - secondsElapsed);
+        console.log("secondsLeft" + secondsLeft);
+        parseInt(secondsElapsed);
         secondsElapsed++;
-        
-        var secondsLeft = (totalSeconds - secondsElapsed)
         timerDisplay.textContent = parseInt(secondsLeft) + " seconds left";
 
         checkTimeout();
@@ -151,14 +173,18 @@ function startTimer() {
 function stopTimer() {
   secondsElapsed = 0;
   clearInterval(interval);
-  renderTime(); 
+  //renderTime();   ----- NEVER USED
 }
 
 function checkTimeout() {
  // checks to see if the time has run out
- if (secondsElapsed >= totalSeconds) {
-  alert("Times Up");
+ 
+ //if (secondsLeft == 0) {   ----- DOESN'T WORK
+  if (secondsElapsed >= totalSeconds) { 
+    console.log("secondsElapsed " + secondsElapsed);
+    console.log("totalSeconds " + totalSeconds);
   stopTimer();
+  alert("Times Up");
   //If while playing game, times out (gameover == false) -> flip screen to FinalScore
   //if (gameover == false) {
     questionBlock.style.display = "none";
