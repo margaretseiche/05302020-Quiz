@@ -1,33 +1,38 @@
+//connecting to HMTL elements
 var startButton = document.querySelector("#start");
 var intro = document.querySelector("#intro");
 var questionBlock = document.querySelector("#question-block");
 
-var questionArray = ['When asked, "How do you put a giraffe into a refrigerator?" how should you respond?',
-                     "Now that we know that it can be done, what is step 1?",
-                     "How do you put an elephant into a refrigerator?",
-                     "The Lion King is hosting an animal conference.  All the animals attend except one.  Which animal does not attend?",
-                     "There is a river you must cross. But it is inhabited by crocodiles.  How do you manage it?"]
+//Setting questions in an array
+var questionArray = ['QUESTION 1: When asked, "How do you put a giraffe into a refrigerator?" how should you respond?',
+                     "QUESTION 2: Now that we know that it can be done, what is step 1?",
+                     "QUESTION 3: How do you put an elephant into a refrigerator?",
+                     "QUESTION 4: The Lion King is hosting an animal conference.  All the animals attend except one.  Which animal does not attend?",
+                     "QUESTION 5: There is a river you must cross. But it is inhabited by crocodiles.  How do you manage it?"]
 
-var item1Choices = ["Cry.","Call your lifeline.","Pseudocode the steps.","Declare the task undefined."]
+//setting choices in array variables (each group applies to one question)                    
+var item1Choices = ["Cry.", "Call your lifeline.", "Pseudocode the steps.", "Declare the task undefined."]
 
 var item2Choices = ["Call the building superintendent.",
-                  "Open the refrigerator.",
-                  "Ask the giraffe if it wants to go in the refrigerator.",
-                  "Complete the if/else statement from the previous choice and go out for ice cream."] 
+                    "Open the refrigerator.",
+                    "Ask the giraffe if it wants to go in the refrigerator.",
+                    "Complete the if/else statement from the previous choice and go out for ice cream."]
 
 var item3Choices = ["Search online for the best method.",
-                  "Measure the elephant.",
-                  "Measure the refrigerator.",
-                  "Open the refrigerator, put in the elephant and close the refrigerator."]
+                    "Measure the elephant.",
+                    "Measure the refrigerator.",
+                    "Open the refrigerator, put in the elephant and close the refrigerator."]
 
-var item4Choices = ["gazelle","wildebeest","tiger","elephant"]
+var item4Choices = ["gazelle", "wildebeest", "tiger", "elephant"]
 
-var item5Choices = ["Swim fast.","Build a bridge.","Wear stilts.","Use a submarine."]
+var item5Choices = ["Swim fast.", "Build a bridge.", "Wear stilts.", "Use a submarine."]
 
-var choiceArray = [item1Choices,item2Choices,item3Choices,item4Choices,item5Choices]
+var choiceArray = [item1Choices, item2Choices, item3Choices, item4Choices, item5Choices]
 
-var answer = ["Pseudocode the steps.","Open the refrigerator.","Search online for the best method.","elephant","Swim fast."]
+//answers in an array
+var answer = ["2", "1", "0", "3", "0"]
 
+//responses in arrays
 var responseCorrect = ["Great job!",
                        "Yes, the correct sequence is open the refrigerator, put in the giraffe, and close the door.  This question tests whether you tend to do simple things in an overly complicated way.",
                        "Yes, if you search the internet for 'elephant' and 'refrigerator', you are likely to find the answer.  Open the refrigerator, take out the giraffe, put in the elephant and close the door. This tests your ability to think through the repercussions of your actions.",
@@ -40,55 +45,125 @@ var responseWrong = ["Sorry, that's not right.  Better luck with the next one.",
                      "Sorry, that's not right.  Better luck with the next one.",
                      "Sorry, that's not right.  Maybe you can try the quiz one more time."]
 
-var totalSeconds = 0;
-
+//function that activates when start button is clicked (see bottom for event listener)
 function startQuiz() {
-    $(intro).hide();
-    var question = document.createElement("p"); 
-    var choice1 = document.createElement("button");
-    var choice2 = document.createElement("button");
-    var choice3 = document.createElement("button");
-    var choice4 = document.createElement("button"); 
-    question.textContent = "";
-    choice1.textContent = "";
-    choice2.textContent = "";
-    choice3.textContent = "";
-    choice4.textContent = ""; 
-    questionBlock.appendChild(question);
-    questionBlock.appendChild(choice1);
-    questionBlock.appendChild(choice2);
-    questionBlock.appendChild(choice3);
-    questionBlock.appendChild(choice4);
-    
-   for (var i = 0; i < questionArray.length; i++) { 
-        question.textContent = questionArray[i]; 
-        choice1.textContent = choiceArray[i][0];
-        choice2.textContent = choiceArray[i][1];
-        choice3.textContent = choiceArray[i][2];
-        choice4.textContent = choiceArray[i][3];    
-   }   
-        
-    //TIMER STARTS
-    var timerDisplay = document.createElement("span"); 
-    timerDisplay.textContent = "Hello World";  
-    questionBlock.appendChild(timerDisplay);
+  $(intro).hide();
+  startTimer();
 
-    for (var i = 0; i < totalSeconds.length; i++) {
-      setInterval(function() {
-        totalSeconds = "60";
-        totalSeconds--;
-        console.log(totalSeconds);
-        timerDisplay.textContent = totalSeconds + " seconds left";
-        return totalSeconds;
+  var question = document.createElement("p");
+  var choice1 = document.createElement("button", onclick = "javascript: setButtonPressed();");
+  var choice2 = document.createElement("button", onclick = "javascript: setButtonPressed();");
+  var choice3 = document.createElement("button", onclick = "javascript: setButtonPressed();");
+  var choice4 = document.createElement("button", onclick = "javascript: setButtonPressed();");
+  question.textContent = "";
+  choice1.textContent = "";
+  choice2.textContent = "";
+  choice3.textContent = "";
+  choice4.textContent = "";
+  choice1.classList.add("choices");
+  choice2.classList.add("choices");
+  choice3.classList.add("choices");
+  choice4.classList.add("choices");
+  choice1.dataset.indexNumber = "0";
+  choice2.dataset.indexNumber = "1";
+  choice3.dataset.indexNumber = "2";
+  choice4.dataset.indexNumber = "3";
+  questionBlock.appendChild(question);
+  questionBlock.appendChild(choice1);
+  questionBlock.appendChild(choice2);
+  questionBlock.appendChild(choice3);
+  questionBlock.appendChild(choice4);
 
-      }, 1000);
-   // return totalSeconds;
+  var response = document.createElement("h4");
+  response.textContent = "";
+  questionBlock.appendChild(response);
+
+  for (var j = 0; j < questionArray.length; j++) {
+    question.textContent = questionArray[j];
+    choice1.textContent = choiceArray[j][0];
+    choice2.textContent = choiceArray[j][1];
+    choice3.textContent = choiceArray[j][2];
+    choice4.textContent = choiceArray[j][3];
+    if (secondsElapsed < 60) {
+
+      //function to wait until buttons are pushed to continue
+      var buttonpressed = false;
+
+      function waitForIt() {
+        if (!buttonpressed) {
+          setTimeout(waitForIt, 500);
+        } else {
+          function setButtonPressed(event) {
+            buttonpressed = true;
+          
+            //choices.addEventListener("click", function checkAnswer() {
+            function checkAnswer(event) {
+              let userchoice = event.target.getAttribute("dataset.indexNumber");
+              if(userchoice[j] === answer[j]) {
+                response.textContent = responseCorrect[0];
+              }
+              else {
+              response.textContent = responseWrong[0];
+              secondsElapsed = secondsElapsed + 5;
+              }
+            }
+          }
+        };
+      }
+    } else {
+      timerDisplay.textContent = "Time's up!";
     }
-
-    //When all questions answered OR time runs out, game is over.  Display score.
-
-    //track high scores --- in local storage?
+  }
 }
-
+    //track high scores --- in local storage?
 
 startButton.addEventListener("click", startQuiz);
+choices.addEventListener("click", checkAnswer);
+
+
+var totalSeconds = 0;
+var secondsElapsed = 0;
+var interval;
+
+function startTimer() {
+
+  var timerDisplay = document.createElement("span");
+  timerDisplay.textContent;
+  questionBlock.appendChild(timerDisplay);
+
+  totalSeconds = 60;
+
+  clearInterval(interval);
+
+  if (totalSeconds > 0) {    
+      interval = setInterval(function() {
+        secondsElapsed++;
+        
+        var secondsLeft = (totalSeconds - secondsElapsed)
+        timerDisplay.textContent = parseInt(secondsLeft) + " seconds left";
+
+        checkTimeout();
+      }, 1000);
+  }
+} 
+
+// This function stops the interval and also resets secondsElapsed 
+function stopTimer() {
+  secondsElapsed = 0;
+  clearInterval(interval);
+  renderTime(); 
+}
+
+function checkTimeout() {
+ // checks to see if the time has run out
+ if (secondsElapsed >= totalSeconds) {
+  alert("Times Up");
+  stopTimer();
+  //If while playing game, times out (gameover == false) -> flip screen to FinalScore
+  //if (gameover == false) {
+    questionBlock.style.display = "none";
+    finalscoreDisplay.style.display = "block";
+  //}
+  //console.log("Times up - current score:", score);
+}
+} 
