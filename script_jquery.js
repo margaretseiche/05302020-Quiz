@@ -1,9 +1,9 @@
 //connecting to HMTL elements
-var startButton = document.querySelector("#start");
-var intro = document.querySelector("#intro");
-var questionBlock = document.querySelector("#question-block");
-var scoreBlock = document.querySelector("#scoreBlock");
-var listBlock = document.querySelector("#listBlock");
+var startButton = $("#start");
+var intro = $("#intro");
+var questionBlock = $("#question-block");
+var scoreBlock = $("#scoreBlock");
+var listBlock = $("#listBlock");
 
 //Setting questions in an array
 var questionArray = ['QUESTION 1: When asked, "How do you put a giraffe into a refrigerator?" how should you respond?',
@@ -65,75 +65,76 @@ var responseWrong = ["Sorry, that's not right.  Better luck with the next one.",
 var correct = 0;
 var scoreArray = [];
 
-
-
 //function that activates when start button is clicked (see bottom for event listener)
 function startQuiz() {
   $(intro).hide();
   startTimer();
 
-  var question = document.createElement("p");
-  var choice1 = document.createElement("button", onclick = "javascript: setButtonPressed();");
-  var choice2 = document.createElement("button", onclick = "javascript: setButtonPressed();");
-  var choice3 = document.createElement("button", onclick = "javascript: setButtonPressed();");
-  var choice4 = document.createElement("button", onclick = "javascript: setButtonPressed();");
-
-  var choices = "";
-
-  question.textContent = "";
-  choice1.textContent = "";
-  choice2.textContent = "";
-  choice3.textContent = "";
-  choice4.textContent = "";
+  var question = $("<p>");
+  var choice1 = $("<button>");
+  var choice2 = $("<button>");
+  var choice3 = $("<button>");
+  var choice4 = $("<button>");
+  question.text = "";
+  choice1.text = "";
+  choice2.text = "";
+  choice3.text = "";
+  choice4.text = "";
   //choice1.className.add="choices";
   //choice2.className.add="choices";
   //choice3.className.add="choices";
   //choice4.className.add="choices";
-  choice1.classList.add="choices";
-  choice2.classList.add="choices";
-  choice3.classList.add="choices";
-  choice4.classList.add="choices";
-  choice1.dataset.indexNumber = "0";
-  choice2.dataset.indexNumber = "1";
-  choice3.dataset.indexNumber = "2";
-  choice4.dataset.indexNumber = "3";
-  questionBlock.appendChild(question);
-  questionBlock.appendChild(choice1);
-  questionBlock.appendChild(choice2);
-  questionBlock.appendChild(choice3);
-  questionBlock.appendChild(choice4);
 
-  var response = document.createElement("h4");
+  // choice1.classList.add="choices";
+  // choice2.classList.add="choices";
+  // choice3.classList.add="choices";
+  // choice4.classList.add="choices";
+
+  choice1.attr("class","choices");
+  choice2.attr("class","choices");
+  choice3.attr("class","choices");
+  choice4.attr("class","choices");
+
+  var choices = $(".choices");
+
+  // choice1.dataset.indexNumber = "0";
+  // choice2.dataset.indexNumber = "1";
+  // choice3.dataset.indexNumber = "2";
+  // choice4.dataset.indexNumber = "3";
+
+  choice1.attr("data-indexNumber",0);
+  choice2.attr("data-indexNumber",1);
+  choice3.attr("data-indexNumber",2);
+  choice4.attr("data-indexNumber",3);
+
+  questionBlock.append(question);
+  questionBlock.append(choice1);
+  questionBlock.append(choice2);
+  questionBlock.append(choice3);
+  questionBlock.append(choice4);
+
+  var response = $("<h4>");
   response.textContent = "";
-  questionBlock.appendChild(response);
+  questionBlock.append(response);
 
   for (var j = 0; j < questionArray.length; j++) {
-    question.textContent = questionArray[j];
-    choice1.textContent = choiceArray[j][0];
-    choice2.textContent = choiceArray[j][1];
-    choice3.textContent = choiceArray[j][2];
-    choice4.textContent = choiceArray[j][3];
-
-    choices = $(".choices");
-
+    question.text = questionArray[j];
+    choice1.text = choiceArray[j][0];
+    choice2.text = choiceArray[j][1];
+    choice3.text = choiceArray[j][2];
+    choice4.text = choiceArray[j][3];
     if (secondsElapsed < 60) {
 
       //function to wait until buttons are pushed to continue
       var buttonpressed = false;
 
       choices.click(function waitForIt() {
-        // if (!buttonpressed) {
-        //   setInterval(waitForIt, 500);
-        // } else {
-
-        do {
-          setInterval(waitForIt, 500);
-        } while (!buttonpressed); 
-
+        if (!buttonpressed) {
+          setTimeout(waitForIt, 500);
+        } else {
           function setButtonPressed(event) {
             buttonpressed = true;
-
-            // choices.addEventListener("click", function checkAnswer(event) {
+          
             choices.click(function checkAnswer(event) {
             //function checkAnswer(event) {
               let userchoice = event.target.getAttribute("dataset.indexNumber");
@@ -147,7 +148,7 @@ function startQuiz() {
               }
             }
           )}
-      //  };           CONNECTED TO USING WHILE LOOP INSTEAD OF IF ELSE FOR 'WAITFORIT' FUNCTION
+        };
       }
       )} else {
     var secondsLeft = totalSeconds - secondsElapsed;
@@ -158,7 +159,7 @@ function startQuiz() {
   }
 }
 
-startButton.addEventListener("click", startQuiz);
+startButton.click(startQuiz);
 //choices.addEventListener("click", checkAnswer);
 
 var totalSeconds = 0;
@@ -170,7 +171,7 @@ function startTimer() {
 
   var timerDisplay = document.createElement("span");
   timerDisplay.textContent;
-  questionBlock.appendChild(timerDisplay);
+  questionBlock.append(timerDisplay);
 
   totalSeconds = 60;
   secondsElapsed = 0;

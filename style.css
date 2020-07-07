@@ -1,18 +1,18 @@
 body {
-    background-color:#e6e6e6; /*#ffebcc;*/
+    background-color:#fff2cc; 
 }
 
 .jumbotron {
-    background-color: #c9e0ad; 
+    background-color: #ffd699;
 }
 
 #start {
-    background-color: #737373;
+    background-color: #00994d;
     border: black;
 }
 
 button {
-    background-color:rgb(106, 161, 10);
+    background-color:#cc7a00;
     color:white;
     height: 3em;
     width: 75%;
@@ -36,7 +36,7 @@ span {      /*for time display*/
     position: absolute;
     top: 4em;
     right: 2em;
-    background-color: #990000;
+    background-color: #00994d;
     color: white;
     height: 2.5em;
     width: 9em;
